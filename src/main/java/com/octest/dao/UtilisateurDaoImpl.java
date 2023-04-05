@@ -65,6 +65,46 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     }
     
   
+    public User modifProfil(String id, String newid, String nom, String prenom) {
+    	System.out.println(id+" "+newid+" "+nom+" "+prenom);
+    	Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+        User user = new User();
+        try {
+            connexion = daoFactory.getConnection();
+            preparedStatement = connexion.prepareStatement("UPDATE Utilisateur SET IDENTIFIANT=?, NOM=?, PRENOM=? WHERE IDENTIFIANT=?");
+            System.out.println("requete update profil");
+            preparedStatement.setString(1, newid);
+            preparedStatement.setString(2, nom);
+            preparedStatement.setString(3, prenom);
+            preparedStatement.setString(4, id);
+            preparedStatement.executeUpdate();
+            
+            preparedStatement = null;
+            preparedStatement = connexion.prepareStatement("SELECT * FROM Utilisateur WHERE IDENTIFIANT=?");
+            preparedStatement.setString(1, newid);
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next()) {
+            	System.out.println("lecture Requete");
+                user.IDENTIFIANT = resultat.getString("IDENTIFIANT");
+                user.MDP = resultat.getString("MDP");
+                user.PRENOM = resultat.getString("PRENOM");
+                user.NOM = resultat.getString("NOM");
+                user.DATE_CREATION = java.time.LocalDate.now();
+                user.DATE_MODIF = java.time.LocalDate.now();
+                user.BEST_SCORE = resultat.getInt("BEST_SCORE");
+                user.LAST_SCORE = resultat.getInt("LAST_SCORE");
+            }
+            return user;
+        }     
+        catch (SQLException e) {
+            System.out.println("error Update profil");
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    
     @Override
     public User VerifCompte(String sId, String sMdp) {
         Connection connexion = null;

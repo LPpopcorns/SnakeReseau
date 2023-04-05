@@ -25,7 +25,7 @@
 				<td>Joueur</td>
 				<td>Meilleur Score</td>
 			</tr>
-			<c:forEach var="i" begin="0" end="10" step="1">
+			<c:forEach var="i" begin="1" end="10" step="1">
 				
     			<tr>
     				<td><c:out value="${ i }" /></td>

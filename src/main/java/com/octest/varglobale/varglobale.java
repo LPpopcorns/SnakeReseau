@@ -6,4 +6,6 @@ public class varglobale {
 
 	public User compteConnect;
 	
+	public boolean modification;
+	
 }

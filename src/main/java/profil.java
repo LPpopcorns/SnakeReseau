@@ -32,28 +32,49 @@ public class profil extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		varglobale compteConnect = (varglobale) getServletContext().getAttribute("varglobale");
-		User connectCompte = compteConnect.compteConnect;
-        if(connectCompte != null) {
-    		System.out.println("test");
-	        request.setAttribute("identifiant", connectCompte.IDENTIFIANT );
-	        request.setAttribute("prenom", connectCompte.PRENOM );
-	        request.setAttribute("nom", connectCompte.NOM );
-	        request.setAttribute("bestScore", connectCompte.BEST_SCORE );
-	        request.setAttribute("lastScore", connectCompte.LAST_SCORE );
+		compteConnect.modification = false;
+        if(compteConnect.compteConnect != null) {
+        	request.setAttribute("modif", false );
+	        request.setAttribute("identifiant", compteConnect.compteConnect.IDENTIFIANT );
+	        request.setAttribute("prenom", compteConnect.compteConnect.PRENOM );
+	        request.setAttribute("nom", compteConnect.compteConnect.NOM );
+	        request.setAttribute("bestScore", compteConnect.compteConnect.BEST_SCORE );
+	        request.setAttribute("lastScore", compteConnect.compteConnect.LAST_SCORE );
         }
         this.getServletContext().getRequestDispatcher("/WEB-INF/profil.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {        
 		varglobale compteConnect = (varglobale) getServletContext().getAttribute("varglobale");
-		User connectCompte = compteConnect.compteConnect;
-        if(connectCompte != null) {
-	        request.setAttribute("identifiant", connectCompte.IDENTIFIANT );
-	        request.setAttribute("prenom", connectCompte.PRENOM );
-	        request.setAttribute("nom", connectCompte.NOM );
-	        request.setAttribute("bestScore", connectCompte.BEST_SCORE );
-	        request.setAttribute("lastScore", connectCompte.LAST_SCORE );
-        }
+        compteConnect.modification = !compteConnect.modification;
+		request.setAttribute("modif", compteConnect.modification );
+		if(compteConnect.modification == true) {
+			if(compteConnect.compteConnect != null) {
+		        request.setAttribute("identifiant", compteConnect.compteConnect.IDENTIFIANT );
+		        request.setAttribute("prenom", compteConnect.compteConnect.PRENOM );
+		        request.setAttribute("nom", compteConnect.compteConnect.NOM );
+		        request.setAttribute("bestScore", compteConnect.compteConnect.BEST_SCORE );
+		        request.setAttribute("lastScore", compteConnect.compteConnect.LAST_SCORE );
+	        }
+		}
+		else {
+			if(compteConnect.compteConnect != null) {        
+		        String sIdentifiant = request.getParameter("identifiant");
+		        String sPrenom = request.getParameter("prenom"); 
+		        String sNom = request.getParameter("nom");
+		        System.out.println(sIdentifiant);
+		        System.out.println(sPrenom);
+		        System.out.println(sNom);
+		        compteConnect.compteConnect = utilisateurDao.modifProfil(compteConnect.compteConnect.IDENTIFIANT, sIdentifiant, sNom, sPrenom);
+		        if(compteConnect.compteConnect != null) {
+		        	request.setAttribute("identifiant", sIdentifiant );
+			        request.setAttribute("prenom", sPrenom );
+			        request.setAttribute("nom", sNom );
+			        request.setAttribute("bestScore", compteConnect.compteConnect.BEST_SCORE );
+			        request.setAttribute("lastScore", compteConnect.compteConnect.LAST_SCORE );
+		        }
+	        }
+		}
         this.getServletContext().getRequestDispatcher("/WEB-INF/profil.jsp").forward(request, response);
 	}
 

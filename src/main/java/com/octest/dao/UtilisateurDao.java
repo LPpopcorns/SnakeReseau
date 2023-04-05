@@ -11,4 +11,5 @@ public interface UtilisateurDao {
 	User VerifCompte(String sId, String sMdp);
 	List<User> RecupClassement();
 	void jouerPartie(int nouveauScore, String identifiant);
+	User modifProfil(String id, String newid, String nom, String prenom);
 }

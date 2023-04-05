@@ -52,6 +52,7 @@ public class accueil extends HttpServlet {
         User user = utilisateurDao.VerifCompte(sId, sMdp);
 		varglobale compteConnect = (varglobale) getServletContext().getAttribute("varglobale");
         compteConnect.compteConnect = user;
+        compteConnect.modification = false;
         getServletContext().setAttribute("varglobale", compteConnect);
         if(user.IDENTIFIANT != null && user.MDP != null) {
         	//request.setAttribute("compteConnect" , user);

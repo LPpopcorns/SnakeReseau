@@ -14,21 +14,55 @@
 <body>  
 	<form method="post" action="profil">
         <h3>Profil</h3>
-
-        <label for="identifiant">Identifiant</label>
+		<%
+			boolean modif = (boolean) request.getAttribute("modif");
+			String identifiant = (String) request.getAttribute("identifiant");
+			String prenom = (String) request.getAttribute("prenom");
+			String nom = (String) request.getAttribute("nom");
+			if(modif == true){
+				out.println("<label for='identifiant'>Identifiant</label>");
+				out.println("<input class='modifier' type='text' id='identifiant' name='identifiant' value='"+ identifiant +"'>");
+				out.println("<label for='nom'>Nom</label>");
+				out.println("<input class='modifier' type='text' id='nom' name='nom' value='"+ nom +"'>");
+				out.println("<label for='prenom'>Prénom</label>");
+				out.println("<input class='modifier' type='text' id='prenom' name='prenom' value='"+ prenom +"'>");
+			}
+			else{
+				out.println("<label for='identifiant'>Identifiant</label>");
+				out.println("<input class='pasmodifier' type='text' id='identifiant' name='identifiant' value='"+ identifiant +"' disabled>");
+				out.println("<label for='nom'>Nom</label>");
+				out.println("<input class='pasmodifier' type='text' id='nom' name='nom' value='"+ nom +"' disabled>");
+				out.println("<label for='prenom'>Prénom</label>");
+				out.println("<input class='pasmodifier' type='text' id='prenom' name='prenom' value='"+ prenom +"' disabled>");
+			}
+		
+		%>
+        <!--  <label for="identifiant">Identifiant</label>
         <input type="text" id="identifiant" name="identifiant" value="${ identifiant }" disabled>
         
         <label for="nom">Nom</label>
         <input type="text" id="nom" name="nom" value="${ nom }" disabled>
         
         <label for="prenom">Prénom</label>
-        <input type="text" id="prenom" name="prenom" value="${ prenom }" disabled>
+        <input type="text" id="prenom" name="prenom" value="${ prenom }" disabled>-->
 
         <label for="bestScore">Meilleur Score</label>
-        <input type="text" id="bestScore" name="bestScore" value="${ bestScore }" disabled>
+        <input class="pasmodifier" type="text" id="bestScore" name="bestScore" value="${ bestScore }" disabled>
         
         <label for="lastScore">Dernier Score</label>
-        <input type="text" id="lastScore" name="lastScore" value="${ lastScore }" disabled>
+        <input class="pasmodifier" type="text" id="lastScore" name="lastScore" value="${ lastScore }" disabled>  
+        
+        <br> 
+        <%
+			if(modif == true){
+				out.println("<button>Valider</button>");
+			}
+			else{
+				out.println("<button>Modifier</button>");
+			}
+		
+		%>
+        
         
         <br>
         <a href="/projetWeb/classement">Classement</a>
@@ -112,11 +146,22 @@ label{
     font-size: 16px;
     font-weight: 500;
 }
-input{
+input.modifier{
     display: block;
     height: 50px;
     width: 100%;
     background-color: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+input.pasmodifier{
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.02);
     border-radius: 3px;
     padding: 0 10px;
     margin-top: 8px;
